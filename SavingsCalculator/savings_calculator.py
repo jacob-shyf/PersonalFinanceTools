@@ -41,6 +41,24 @@ def get_days_until(target_date):
 
     return nd
 
+def calculate_monthly_savings(goal, p, nd, ig):
+    # Calculate the number of deposits that will be made
+    num_contributions = (nd / 28) + 1
+    num_contributions = int(num_contributions)
+    
+    # Calculate the principal with the interest that is accrued on it
+    principal = p * ((1 + ig) ** (num_contributions - 1))
+
+    # Calculate the interest that will be accrued on the monthly contribution
+    interest = 0
+    for i in range(0, num_contributions):
+        interest += (1 + ig) ** (num_contributions - 1 - i)
+
+    # Calculate monthly contribution
+    monthly_contribution = (goal - principal) / interest
+
+    return int(monthly_contribution)
+
 
 if __name__ == '__main__':
     # Set your savings goal
@@ -57,7 +75,9 @@ if __name__ == '__main__':
     p = int(input("Enter the current amount you have in savings: "))
 
     nd = get_days_until(target_date)
-    print('Days between: ' + str(nd))
-
-
+    monthly_savings = calculate_monthly_savings(goal, p, nd, ig)
     
+    print('\nTo achieve your goal of saving $' + str(goal) + ' by ' + target_date + ', you must')
+    print('contribute $' + str(monthly_savings) + ' each pay period.')
+
+
